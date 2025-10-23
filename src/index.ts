@@ -19,11 +19,14 @@ const main = async () => {
 
   const server = new ApolloServer({ typeDefs, resolvers });
   await server.start();
-  
+  const mongo = "mongodb://root:password@mongo:27017";
+  if (!mongo) {
+    throw new Error("MONGO_URI environment variable is not set");
+  }
 
   await mongoose.connect(
-        "mongodb://root:password@localhost:27017/?authSource=admin",
-      );
+        mongo,
+      )
 
   app.use(
     "/graphql",
